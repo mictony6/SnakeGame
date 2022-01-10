@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Snake {
-    BufferedImage bodyPart, headVertical, headHorizontal;
+    BufferedImage bodyPart, headDown, headRight, headLeft, headUp ;
     BufferedImage tailLeft, tailRight, tailUp, tailDown;
     EntityChain snake;
     public boolean isAlive;
@@ -22,8 +22,10 @@ public class Snake {
         game = g;
         snake = new EntityChain(0,0);
         try {
-            headVertical = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_vertical.png")));
-            headHorizontal = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_horizontal.png")));
+            headDown = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_down.png")));
+            headUp = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_up.png")));
+            headLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_left.png")));
+            headRight = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_right.png")));
             bodyPart = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_body.png")));
 
             tailLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_tail_left.png")));
@@ -82,13 +84,20 @@ public class Snake {
         BufferedImage currentImage = null;
 
         if (part == snake.head) {
-            if (direction.y == 0) {
-                currentImage = headHorizontal;
+            if (direction.x >0) {
+                currentImage = headRight;
 
 
-            } else {
-                currentImage = headVertical;
+            }
+            else if (direction.x < 0){
+                currentImage = headLeft;
+            }
+            else if (direction.y > 0){
+                currentImage = headDown;
 
+            }
+            else{
+                currentImage = headUp;
             }
             part.direction = direction;
             return currentImage;
