@@ -25,9 +25,9 @@ public class GUI extends JPanel{
 
             gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
             gameOverPanel.setBackground(Color.black);
-            Font largeFont = new Font("/gui.otf", Font.BOLD, 48);
+            Font largeFont = new Font("/images/gui.otf", Font.BOLD, 48);
 
-            Font smallFont = new Font("/gui.otf", Font.PLAIN, 20);
+            Font smallFont = new Font("/images/gui.otf", Font.PLAIN, 20);
             JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
             gameOverLabel.setFont(largeFont);
 

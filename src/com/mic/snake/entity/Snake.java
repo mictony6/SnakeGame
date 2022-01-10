@@ -6,8 +6,8 @@ import com.mic.snake.window.Game;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public class Snake {
     BufferedImage bodyPart, headDown, headRight, headLeft, headUp ;
@@ -22,16 +22,16 @@ public class Snake {
         game = g;
         snake = new EntityChain(0,0);
         try {
-            headDown = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_down.png")));
-            headUp = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_up.png")));
-            headLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_left.png")));
-            headRight = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_head_right.png")));
-            bodyPart = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_body.png")));
+            headDown = ImageIO.read(getClass().getResource("/images/snake_head_down.png"));
+            headUp = ImageIO.read(getClass().getResource("/images/snake_head_up.png"));
+            headLeft = ImageIO.read(getClass().getResource("/images/snake_head_left.png"));
+            headRight = ImageIO.read(getClass().getResource("/images/snake_head_right.png"));
+            bodyPart = ImageIO.read(getClass().getResource("/images/snake_body_img.png"));
 
-            tailLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_tail_left.png")));
-            tailRight = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_tail_right.png")));
-            tailUp = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_tail_up.png")));
-            tailDown = ImageIO.read(Objects.requireNonNull(getClass().getResource("/snake_tail_down.png")));
+            tailLeft = ImageIO.read(getClass().getResource("/images/snake_tail_left.png"));
+            tailRight = ImageIO.read(getClass().getResource("/images/snake_tail_right.png"));
+            tailUp = ImageIO.read(getClass().getResource("/images/snake_tail_up.png"));
+            tailDown = ImageIO.read(getClass().getResource("/images/snake_tail_down.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -18,7 +18,7 @@ public class Apple extends Entity{
 
     private void getImage(){
         try {
-            img = ImageIO.read(getClass().getResource("/apple.png"));
+            img = ImageIO.read(getClass().getResource("/images/apple.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
