@@ -1,27 +1,28 @@
 package com.mic.snake.entity;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
 
-public class EntityGroup {
+public class ColliderGroup {
 
-    private ArrayList <Entity> group;
+    private ArrayList <BoxCollider> group;
     private int size;
 
-    public EntityGroup(){
+    public ColliderGroup(){
         group = new ArrayList<>();
         size = 0;
     }
 
-    public void add(Entity e){
+    public void add(BoxCollider e){
         group.add(e);
         size++;
     }
 
-    public void kill(Entity entity){
-        for (Entity e:
+    public void kill(BoxCollider entity){
+        for (BoxCollider e:
              group) {
             if (e.equals(entity)){
                 group.remove(e);
@@ -31,25 +32,25 @@ public class EntityGroup {
         }
     }
 
-    public ArrayList get(){
+    public ArrayList<BoxCollider> get(){
         return group;
     }
 
     public void draw(Graphics2D g2, int size){
-        for (Entity e: group){
+        for (BoxCollider e: group){
             e.draw(g2, e.img, size);
         }
     }
 
     public void update(){
-        for (Entity e: group){
+        for (BoxCollider e: group){
             e.update();
         }
     }
 
     @Override
     public String toString() {
-        return "EntityGroup{" +
+        return "ColliderGroup{" +
                 "group=" + group +
                 ", size=" + size +
                 '}';

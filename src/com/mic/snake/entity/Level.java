@@ -2,7 +2,7 @@ package com.mic.snake.entity;
 
 public class Level {
 
-    EntityGroup obstacles;
+    ColliderGroup obstacles;
 
     public Level(){
 

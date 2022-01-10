@@ -9,19 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityChain {
-    Entity head;
+    BoxCollider head;
     Entity tail;
     int length = 0;
 
     EntityChain(int x, int y){
-        head = new Entity();
+        head = new BoxCollider(x, y);
         head.direction = new Vector2D(0,0);
         tail = new Entity();
         tail.direction = new Vector2D(0,0);
         head.next = tail;
         tail.prev = head;
-        head.x = x;
-        head.y = y;
         while (length< 2){
             this.insert();
         }
@@ -52,6 +50,8 @@ public class EntityChain {
         }
         return chain;
     }
+
+
 
 
 

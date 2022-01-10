@@ -3,9 +3,7 @@ package com.mic.snake.window;
 import com.mic.snake.components.Input;
 import com.mic.snake.components.LevelLoader;
 import com.mic.snake.components.Vector2D;
-import com.mic.snake.entity.Apple;
-import com.mic.snake.entity.EntityGroup;
-import com.mic.snake.entity.Snake;
+import com.mic.snake.entity.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -16,7 +14,7 @@ public class Game extends GUI implements Runnable{
     int FPS = 12;
     Apple apple;
     Snake player ;
-    EntityGroup obstacles;
+    ColliderGroup obstacles;
     LevelLoader levelLoader;
     private int level = 0;
 
@@ -34,7 +32,7 @@ public class Game extends GUI implements Runnable{
         super();
 
         levelLoader = new LevelLoader();
-        obstacles = new EntityGroup();
+        obstacles = new ColliderGroup();
 
 
 
@@ -124,12 +122,16 @@ public class Game extends GUI implements Runnable{
     void update(){
 
         player.update();
+        for (BoxCollider e: obstacles.get()){
+            if( player.collidesWith(e)){
+                player.isAlive = false;
+            }
+        }
         if (!player.isAlive){
             gameOver();
         }
         else if (player.getPosition().x > screenWidth || player.getPosition().x < 0|| player.getPosition().y > screenHeight || player.getPosition().y<0){
             player.isAlive = false;
-            gameOver();
         }
         else if (player.getPosition().equals(new Vector2D(apple.x, apple.y))){
                 player.new_part();

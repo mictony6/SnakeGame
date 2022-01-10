@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class SpikeBall extends BoxCollider{
     public SpikeBall(int x, int y){
-        super();
+        super(x, y);
         try {
             img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/data/obstacles/obstacle_2.png")));
         } catch (IOException e) {
@@ -17,8 +17,6 @@ public class SpikeBall extends BoxCollider{
         this.y = y;
 
     }
-    public void draw(Graphics2D g2, int size){
-        g2.drawImage(img, x, y, size, size, null);
-    }
+
 
 }

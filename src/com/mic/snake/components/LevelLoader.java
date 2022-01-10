@@ -1,7 +1,7 @@
 package com.mic.snake.components;
 
 import com.mic.snake.entity.Crate;
-import com.mic.snake.entity.EntityGroup;
+import com.mic.snake.entity.ColliderGroup;
 import com.mic.snake.entity.EvilRamen;
 import com.mic.snake.entity.SpikeBall;
 
@@ -12,17 +12,17 @@ import java.util.ArrayList;
 
 public class LevelLoader {
 
-    public EntityGroup loadLevel(int i) throws IOException {
+    public ColliderGroup loadLevel(int i) throws IOException {
 
         return switch (i) {
             case 0 -> parseLevelFile("res/data/level/0/level.csv");
             case 1 -> parseLevelFile( "res/data/level/2/level.csv");
             case 2 -> parseLevelFile( "res/data/level/3/level.csv");
-            default -> new EntityGroup();
+            default -> new ColliderGroup();
         };
     }
 
-    EntityGroup parseLevelFile(String path) throws IOException {
+    ColliderGroup parseLevelFile(String path) throws IOException {
         ArrayList<ArrayList<Integer>> data = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader(path));
@@ -39,7 +39,7 @@ public class LevelLoader {
             data.add(row);
         }
 
-        EntityGroup obstacles = new EntityGroup();
+        ColliderGroup obstacles = new ColliderGroup();
         int tileSize = 24;
         int y = 0;
         for (ArrayList<Integer> r: data){

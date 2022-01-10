@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class EvilRamen extends BoxCollider{
     public EvilRamen(int x, int y){
-        super();
+        super(x, y);
         try {
             img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/data/obstacles/obstacle_4.png")));
         } catch (IOException e) {
@@ -16,8 +16,5 @@ public class EvilRamen extends BoxCollider{
         this.x = x;
         this.y = y;
 
-    }
-    public void draw(Graphics2D g2, int size){
-        g2.drawImage(img, x, y, size, size, null);
     }
 }

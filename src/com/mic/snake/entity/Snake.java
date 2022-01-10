@@ -20,7 +20,7 @@ public class Snake {
     public Snake(Game g){
         isAlive = true;
         game = g;
-        snake = new EntityChain(24,0);
+        snake = new EntityChain(24*3,24);
         try {
             headDown = ImageIO.read(getClass().getResource("/images/snake_head_down.png"));
             headUp = ImageIO.read(getClass().getResource("/images/snake_head_up.png"));
@@ -59,6 +59,7 @@ public class Snake {
         }
 
         move();
+
 
     }
 
@@ -155,6 +156,10 @@ public class Snake {
 
     public Vector2D getPosition(){
         return new Vector2D(snake.head.x, snake.head.y);
+    }
+
+    public boolean collidesWith(BoxCollider other){
+        return snake.head.collideRect(other);
     }
 
 }
