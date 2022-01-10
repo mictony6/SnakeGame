@@ -7,10 +7,8 @@ import com.mic.snake.entity.Apple;
 import com.mic.snake.entity.EntityGroup;
 import com.mic.snake.entity.Snake;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Game extends GUI implements Runnable{
     boolean running = false;
@@ -20,7 +18,7 @@ public class Game extends GUI implements Runnable{
     Snake player ;
     EntityGroup obstacles;
     LevelLoader levelLoader;
-    private int level;
+    private int level = 0;
 
 
 
@@ -79,7 +77,6 @@ public class Game extends GUI implements Runnable{
     }
 
     public void start() {
-        level = 0;
         System.out.println(level);
         try {
             obstacles = levelLoader.loadLevel(level);

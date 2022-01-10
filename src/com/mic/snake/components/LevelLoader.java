@@ -13,16 +13,16 @@ import java.util.ArrayList;
 public class LevelLoader {
 
     public EntityGroup loadLevel(int i) throws IOException {
-        EntityGroup data = new EntityGroup();
-        switch (i) {
-            case 0 : data = parseLevelFile(0, "res/data/level/0/level.csv");break;
-            case 1 : data = parseLevelFile(1, "res/data/level/2/level.csv");break;
-            case 2: data = parseLevelFile(1, "res/data/level/3/level.csv");break;
-        }
-        return data;
+
+        return switch (i) {
+            case 0 -> parseLevelFile("res/data/level/0/level.csv");
+            case 1 -> parseLevelFile( "res/data/level/2/level.csv");
+            case 2 -> parseLevelFile( "res/data/level/3/level.csv");
+            default -> new EntityGroup();
+        };
     }
 
-    EntityGroup parseLevelFile(int i, String path) throws IOException {
+    EntityGroup parseLevelFile(String path) throws IOException {
         ArrayList<ArrayList<Integer>> data = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader(path));
@@ -65,13 +65,11 @@ public class LevelLoader {
                         break;
 
                 }
-                System.out.printf("(%d, %d), ", x, y);
 
                 x++;
 
             }
             y++;
-            System.out.println("/n");
         }
         return obstacles;
     }
