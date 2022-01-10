@@ -35,9 +35,9 @@ public class EntityGroup {
         return group;
     }
 
-    public void draw(Graphics2D g2, BufferedImage img, int size){
+    public void draw(Graphics2D g2, int size){
         for (Entity e: group){
-            e.draw(g2, img, size);
+            e.draw(g2, e.img, size);
         }
     }
 
@@ -47,4 +47,11 @@ public class EntityGroup {
         }
     }
 
+    @Override
+    public String toString() {
+        return "EntityGroup{" +
+                "group=" + group +
+                ", size=" + size +
+                '}';
+    }
 }

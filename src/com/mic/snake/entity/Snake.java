@@ -20,7 +20,7 @@ public class Snake {
     public Snake(Game g){
         isAlive = true;
         game = g;
-        snake = new EntityChain(0,0);
+        snake = new EntityChain(24,0);
         try {
             headDown = ImageIO.read(getClass().getResource("/images/snake_head_down.png"));
             headUp = ImageIO.read(getClass().getResource("/images/snake_head_up.png"));

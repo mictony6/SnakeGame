@@ -2,6 +2,8 @@ package com.mic.snake.components;
 
 import com.mic.snake.entity.Crate;
 import com.mic.snake.entity.EntityGroup;
+import com.mic.snake.entity.EvilRamen;
+import com.mic.snake.entity.SpikeBall;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,18 +14,19 @@ public class LevelLoader {
 
     public EntityGroup loadLevel(int i) throws IOException {
         EntityGroup data = new EntityGroup();
-        switch (i - 1) {
-            case 0 -> data = parseLevelFile(0);
-            case 1 -> data = parseLevelFile(1);
+        switch (i) {
+            case 0 : data = parseLevelFile(0, "res/data/level/0/level.csv");break;
+            case 1 : data = parseLevelFile(1, "res/data/level/2/level.csv");break;
+            case 2: data = parseLevelFile(1, "res/data/level/3/level.csv");break;
         }
         return data;
     }
 
-    EntityGroup parseLevelFile(int i) throws IOException {
-        String path = "/data/level/"+i+"/level.csv";
-        ArrayList<ArrayList<Integer>> data = null;
+    EntityGroup parseLevelFile(int i, String path) throws IOException {
+        ArrayList<ArrayList<Integer>> data = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader(path));
+
         String line;
         String delimiter = ",";
         while((line = br.readLine()) != null){
@@ -47,11 +50,28 @@ public class LevelLoader {
                     case 0:
                         Crate newCrate = new Crate(x*tileSize, y*tileSize);
                         obstacles.add(newCrate);
+
                         break;
+                    case 1:
+                        SpikeBall newBall = new SpikeBall(x*tileSize, y*tileSize);
+                        obstacles.add(newBall);
+                        break;
+                    case 2:
+                        // TODO: star collectibles
+                        break;
+                    case 3:
+                        EvilRamen newRamen = new EvilRamen(x*tileSize, y*tileSize);
+                        obstacles.add(newRamen);
+                        break;
+
                 }
+                System.out.printf("(%d, %d), ", x, y);
+
                 x++;
+
             }
             y++;
+            System.out.println("/n");
         }
         return obstacles;
     }

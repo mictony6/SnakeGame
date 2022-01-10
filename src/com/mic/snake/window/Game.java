@@ -38,6 +38,10 @@ public class Game extends GUI implements Runnable{
         levelLoader = new LevelLoader();
         obstacles = new EntityGroup();
 
+
+
+
+
         setBackground(Color.black);
         setDoubleBuffered(true);
 
@@ -76,13 +80,12 @@ public class Game extends GUI implements Runnable{
 
     public void start() {
         level = 0;
-
+        System.out.println(level);
         try {
             obstacles = levelLoader.loadLevel(level);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         startGameThread();
     }
 
@@ -168,7 +171,7 @@ public class Game extends GUI implements Runnable{
             showGrid(g2);
 
         }
-
+        obstacles.draw(g2, 24);
         if (player.isAlive){
             player.draw(g2);
             apple.draw(g2);
