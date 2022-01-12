@@ -15,15 +15,16 @@ public class Game extends GUI implements Runnable{
     Apple apple;
     Snake player ;
     ColliderGroup obstacles;
+    ColliderGroup collectibles;
     LevelLoader levelLoader;
     private int level = 0;
+    private boolean debug;
 
 
 
     public int tileSize = 24;
     public int hSlots;
     public int vSlots;
-    private boolean debug = false;
 
 
 
@@ -31,14 +32,16 @@ public class Game extends GUI implements Runnable{
     Game(int w, int h){
         super();
 
+        debug = false;
         levelLoader = new LevelLoader();
         obstacles = new ColliderGroup();
+        collectibles = new ColliderGroup();
 
 
 
 
 
-        setBackground(Color.black);
+        setBackground(new Color(50,80,35));
         setDoubleBuffered(true);
 
         setFocusable(true);
@@ -50,6 +53,9 @@ public class Game extends GUI implements Runnable{
         player = new Snake(this);
         addKeyListener(new Input(this));
         apple = new Apple(this);
+
+
+
 
 
         setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -76,11 +82,21 @@ public class Game extends GUI implements Runnable{
 
     public void start() {
         System.out.println(level);
+        //Load level file
         try {
             obstacles = levelLoader.loadLevel(level);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Generate apple location
+        do{
+            apple.newApple();
+
+        } while (appleCollidesWithObstacles());
+
+
         startGameThread();
     }
 
@@ -106,24 +122,34 @@ public class Game extends GUI implements Runnable{
         while (gameThread != null){
 
             currentTime = System.nanoTime();
-            delta += (currentTime-lastTime)/drawInterval;
+            delta += (currentTime-lastTime);
 
             lastTime = currentTime;
 
-            if (delta>=1){
+            if (delta-drawInterval>=0){
                 update();
                 repaint();
-                delta--;
+                delta-=drawInterval;
 
             }
         }
     }
 
-    void update(){
+    boolean appleCollidesWithObstacles(){
+        for (BoxCollider e:
+             obstacles.get()) {
+            if (new Vector2D(e.x, e.y).equals(apple.getPosition())){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    void update(){
+        System.out.println(player.getScore());
         player.update();
         for (BoxCollider e: obstacles.get()){
-            if( player.collidesWith(e)){
+            if( player.collidesWith(e) && e.getId().equals(BoxCollider.ID.SIMPLE)){
                 player.isAlive = false;
             }
         }
@@ -135,8 +161,28 @@ public class Game extends GUI implements Runnable{
         }
         else if (player.getPosition().equals(new Vector2D(apple.x, apple.y))){
                 player.new_part();
-                apple.newApple();
+
+
+
+                if (player.getScore() == 5){
+                    level++;
+                    player.reset(3*tileSize, 9*tileSize);
+                    try{
+                        obstacles = levelLoader.loadLevel(level);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+
+                do{
+                    apple.newApple();
+
+                } while (appleCollidesWithObstacles());
+
+
             }
+
 
 
     }
@@ -152,13 +198,7 @@ public class Game extends GUI implements Runnable{
 
     }
 
-    public Vector2D getPlayerDirection(){
-        return player.getDirection();
-    }
 
-    void drawLevel(Graphics2D g2){
-
-    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -168,8 +208,8 @@ public class Game extends GUI implements Runnable{
 
         if (debug){
             showGrid(g2);
-
         }
+
         obstacles.draw(g2, 24);
         if (player.isAlive){
             player.draw(g2);

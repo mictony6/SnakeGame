@@ -3,9 +3,21 @@ package com.mic.snake.entity;
 import java.awt.*;
 
 public class BoxCollider extends Entity{
+    public enum ID{
+        COLLECTIBLE,
+        DESTROYABLE,
+        SIMPLE
+    }
 
-    public BoxCollider(int x, int y){
+    private ID id;
 
+
+    public ID getId() {
+        return id;
+    }
+
+    public BoxCollider(int x, int y, ID id){
+        this.id = id;
         this.x = x;
         this.y = y;
 

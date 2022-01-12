@@ -1,5 +1,6 @@
 package com.mic.snake.entity;
 
+import com.mic.snake.components.Vector2D;
 import com.mic.snake.window.Game;
 
 import javax.imageio.ImageIO;
@@ -25,7 +26,7 @@ public class Apple extends Entity{
     }
 
     private void initialize() {
-        newApple();
+        x =y = -24;
 
     }
 
@@ -41,6 +42,10 @@ public class Apple extends Entity{
             return;}
         g2.drawImage(img, x, y, game.tileSize, game.tileSize, null);
 
+    }
+
+    public Vector2D getPosition(){
+        return new Vector2D(x, y);
     }
 
 }

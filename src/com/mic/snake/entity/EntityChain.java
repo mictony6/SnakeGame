@@ -14,7 +14,7 @@ public class EntityChain {
     int length = 0;
 
     EntityChain(int x, int y){
-        head = new BoxCollider(x, y);
+        head = new BoxCollider(x, y, BoxCollider.ID.SIMPLE);
         head.direction = new Vector2D(0,0);
         tail = new Entity();
         tail.direction = new Vector2D(0,0);

@@ -1,13 +1,11 @@
 package com.mic.snake.components;
 
-import com.mic.snake.entity.Crate;
-import com.mic.snake.entity.ColliderGroup;
-import com.mic.snake.entity.EvilRamen;
-import com.mic.snake.entity.SpikeBall;
+import com.mic.snake.entity.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class LevelLoader {
@@ -15,9 +13,9 @@ public class LevelLoader {
     public ColliderGroup loadLevel(int i) throws IOException {
 
         return switch (i) {
-            case 0 -> parseLevelFile("res/data/level/0/level.csv");
-            case 1 -> parseLevelFile( "res/data/level/2/level.csv");
-            case 2 -> parseLevelFile( "res/data/level/3/level.csv");
+            case 0 -> parseLevelFile("/data/level/level_level1.csv");
+            case 1 -> parseLevelFile( "/data/level/level_level2.csv");
+            case 2 -> parseLevelFile( "/data/level/level_level3.csv");
             default -> new ColliderGroup();
         };
     }
@@ -25,7 +23,7 @@ public class LevelLoader {
     ColliderGroup parseLevelFile(String path) throws IOException {
         ArrayList<ArrayList<Integer>> data = new ArrayList<>();
 
-        BufferedReader br = new BufferedReader(new FileReader(path));
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)));
 
         String line;
         String delimiter = ",";
@@ -39,7 +37,7 @@ public class LevelLoader {
             data.add(row);
         }
 
-        ColliderGroup obstacles = new ColliderGroup();
+        ColliderGroup colliders = new ColliderGroup();
         int tileSize = 24;
         int y = 0;
         for (ArrayList<Integer> r: data){
@@ -48,20 +46,20 @@ public class LevelLoader {
 
                 switch (c){
                     case 0:
-                        Crate newCrate = new Crate(x*tileSize, y*tileSize);
-                        obstacles.add(newCrate);
+                        Crate newCrate = new Crate(x*tileSize, y*tileSize, BoxCollider.ID.SIMPLE);
+                        colliders.add(newCrate);
 
                         break;
                     case 1:
-                        SpikeBall newBall = new SpikeBall(x*tileSize, y*tileSize);
-                        obstacles.add(newBall);
+                        SpikeBall newBall = new SpikeBall(x*tileSize, y*tileSize, BoxCollider.ID.SIMPLE);
+                        colliders.add(newBall);
                         break;
                     case 2:
-                        // TODO: star collectibles
+                        colliders.add(new Star(x*tileSize, y*tileSize, BoxCollider.ID.COLLECTIBLE));
                         break;
                     case 3:
-                        EvilRamen newRamen = new EvilRamen(x*tileSize, y*tileSize);
-                        obstacles.add(newRamen);
+                        EvilRamen newRamen = new EvilRamen(x*tileSize, y*tileSize, BoxCollider.ID.SIMPLE);
+                        colliders.add(newRamen);
                         break;
 
                 }
@@ -71,7 +69,7 @@ public class LevelLoader {
             }
             y++;
         }
-        return obstacles;
+        return colliders;
     }
 
 

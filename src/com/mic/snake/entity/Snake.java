@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Snake {
     BufferedImage bodyPart, headDown, headRight, headLeft, headUp ;
@@ -21,17 +22,18 @@ public class Snake {
         isAlive = true;
         game = g;
         snake = new EntityChain(24*3,24);
+        setDirection(new Vector2D(0,0));
         try {
-            headDown = ImageIO.read(getClass().getResource("/images/snake_head_down.png"));
-            headUp = ImageIO.read(getClass().getResource("/images/snake_head_up.png"));
-            headLeft = ImageIO.read(getClass().getResource("/images/snake_head_left.png"));
-            headRight = ImageIO.read(getClass().getResource("/images/snake_head_right.png"));
-            bodyPart = ImageIO.read(getClass().getResource("/images/snake_body_img.png"));
+            headDown = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_head_down.png")));
+            headUp = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_head_up.png")));
+            headLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_head_left.png")));
+            headRight = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_head_right.png")));
+            bodyPart = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_body_img.png")));
 
-            tailLeft = ImageIO.read(getClass().getResource("/images/snake_tail_left.png"));
-            tailRight = ImageIO.read(getClass().getResource("/images/snake_tail_right.png"));
-            tailUp = ImageIO.read(getClass().getResource("/images/snake_tail_up.png"));
-            tailDown = ImageIO.read(getClass().getResource("/images/snake_tail_down.png"));
+            tailLeft = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_tail_left.png")));
+            tailRight = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_tail_right.png")));
+            tailUp = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_tail_up.png")));
+            tailDown = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/snake_tail_down.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +50,7 @@ public class Snake {
 
     public void update(){
         Entity part = snake.tail.prev;
-        while (part != snake.head){
+        while (part != snake.head && !direction.equals(new Vector2D(0,0))){
 
             if(part.x== snake.head.x && part.y == snake.head.y){
                 isAlive = false;
@@ -159,7 +161,19 @@ public class Snake {
     }
 
     public boolean collidesWith(BoxCollider other){
-        return snake.head.collideRect(other);
+            return snake.head.collideRect(other);
+
+    }
+
+    public int getScore (){
+        return snake.length;
+    }
+
+    public void reset(int x, int y){
+        int lastLenght = snake.length;
+        snake = new EntityChain(x,y);
+        setDirection(new Vector2D(0,0));
+        snake.length = lastLenght;
     }
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="24" tileheight="24" infinite="0" nextlayerid="7" nextobjectid="3">
  <editorsettings>
-  <export target="level/0/level.csv" format="csv"/>
+  <export target="level/level.csv" format="csv"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/obstacles.tsx"/>
  <tileset firstgid="10" source="snake.tsx"/>
@@ -34,7 +34,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <layer id="5" name="level2" width="30" height="25" visible="0">
+ <layer id="5" name="level2" width="30" height="25">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,1,
@@ -63,7 +63,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <layer id="6" name="level3" width="30" height="25">
+ <layer id="6" name="level3" width="30" height="25" visible="0">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
