@@ -1,7 +1,6 @@
 package com.mic.snake.window;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Window {
     JFrame mainFrame;
@@ -12,7 +11,7 @@ public class Window {
         mainFrame = new JFrame("Snake");
         mainFrame.add(game);
 
-        mainFrame.setDefaultCloseOperation(3);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
 
         mainFrame.pack();

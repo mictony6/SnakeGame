@@ -22,14 +22,8 @@ public class ColliderGroup {
     }
 
     public void kill(BoxCollider entity){
-        for (BoxCollider e:
-             group) {
-            if (e.equals(entity)){
-                group.remove(e);
-                size --;
-            }
+        group.remove(entity);
 
-        }
     }
 
     public ArrayList<BoxCollider> get(){

@@ -5,8 +5,9 @@ import java.awt.*;
 public class BoxCollider extends Entity{
     public enum ID{
         COLLECTIBLE,
-        DESTROYABLE,
-        SIMPLE
+        BREAKABLE,
+        SIMPLE,
+        EMPTY
     }
 
     private ID id;

@@ -5,8 +5,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class EvilRamen extends BoxCollider{
-    public EvilRamen(int x, int y, ID id){
+public class Ramen extends BoxCollider{
+    public Ramen(int x, int y, ID id){
         super(x, y, id);
         try {
             img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/data/obstacles/obstacle_4.png")));

@@ -1,7 +1,6 @@
 package com.mic.snake.entity;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 

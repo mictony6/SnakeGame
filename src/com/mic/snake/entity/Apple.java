@@ -6,6 +6,7 @@ import com.mic.snake.window.Game;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
 
 public class Apple extends Entity{
@@ -19,14 +20,14 @@ public class Apple extends Entity{
 
     private void getImage(){
         try {
-            img = ImageIO.read(getClass().getResource("/images/apple.png"));
+            img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/data/obstacles/obstacle_6.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void initialize() {
-        x =y = -24;
+        x = y = -24;
 
     }
 

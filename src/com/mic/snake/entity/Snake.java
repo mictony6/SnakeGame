@@ -6,7 +6,6 @@ import com.mic.snake.window.Game;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -166,14 +165,14 @@ public class Snake {
     }
 
     public int getScore (){
-        return snake.length;
+        return snake.length-2;
     }
 
     public void reset(int x, int y){
-        int lastLenght = snake.length;
+        int lastLength = snake.length;
         snake = new EntityChain(x,y);
         setDirection(new Vector2D(0,0));
-        snake.length = lastLenght;
+        snake.length = lastLength;
     }
 
 }
