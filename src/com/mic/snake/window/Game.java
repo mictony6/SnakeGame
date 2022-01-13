@@ -1,24 +1,22 @@
 package com.mic.snake.window;
 
 import com.mic.snake.components.Input;
-import com.mic.snake.components.LevelLoader;
+import com.mic.snake.components.Level;
 import com.mic.snake.components.Vector2D;
 import com.mic.snake.entity.*;
 
 import java.awt.*;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class Game extends GUI implements Runnable{
     boolean running = false;
     Thread gameThread;
-    int FPS = 12;
-    Apple apple;
+    final int FPS = 12;
     Snake player ;
-    ColliderGroup obstacles;
-    ColliderGroup collectibles;
-    LevelLoader levelLoader;
-    private int level = 0;
+    private Level gameLevel;
     private boolean debug;
+    private int starCount = 0;
+    private int ramenBoost = 0;
 
 
 
@@ -33,13 +31,7 @@ public class Game extends GUI implements Runnable{
         super();
 
         debug = false;
-        levelLoader = new LevelLoader();
-        obstacles = new ColliderGroup();
-        collectibles = new ColliderGroup();
-
-
-
-
+        gameLevel = new Level(Level.TYPE.STORY , this);
 
         setBackground(new Color(50,80,35));
         setDoubleBuffered(true);
@@ -52,7 +44,6 @@ public class Game extends GUI implements Runnable{
 
         player = new Snake(this);
         addKeyListener(new Input(this));
-        apple = new Apple(this);
 
 
 
@@ -81,22 +72,7 @@ public class Game extends GUI implements Runnable{
     }
 
     public void start() {
-        System.out.println(level);
-        //Load level file
-        try {
-            obstacles = levelLoader.loadLevel(level);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Generate apple location
-        do{
-            apple.newApple();
-
-        } while (appleCollidesWithObstacles());
-
-
+        gameLevel.newApple();
         startGameThread();
     }
 
@@ -135,53 +111,65 @@ public class Game extends GUI implements Runnable{
         }
     }
 
-    boolean appleCollidesWithObstacles(){
-        for (BoxCollider e:
-             obstacles.get()) {
-            if (new Vector2D(e.x, e.y).equals(apple.getPosition())){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     void update(){
-        System.out.println(player.getScore());
         player.update();
-        for (BoxCollider e: obstacles.get()){
-            if( player.collidesWith(e) && e.getId().equals(BoxCollider.ID.SIMPLE)){
-                player.isAlive = false;
+        gameLevel.update();
+
+
+        ArrayList<BoxCollider> toBeRemoved = new ArrayList<>();
+
+        //check for obstacle collision
+        for (BoxCollider e: gameLevel.getObstacleGroup()){
+            if( player.collidesWith(e) ){
+                switch(e.getId()){
+                    case SIMPLE :
+                        player.isAlive = false;
+                        break;
+                    case COLLECTIBLE:
+                        if (!(e instanceof Star)) {
+                            ramenBoost++;
+                        }
+                        toBeRemoved.add(e);
+                        break;
+                    case BREAKABLE:
+                        if( ramenBoost > 0){
+                            toBeRemoved.add(e);
+                            ramenBoost--;
+                            break;
+                        }
+                        else{
+                            player.isAlive = false;
+                        }
+                }
             }
         }
+
+        for (BoxCollider e: toBeRemoved){
+            gameLevel.killObject(e);
+        }
+
         if (!player.isAlive){
             gameOver();
         }
         else if (player.getPosition().x > screenWidth || player.getPosition().x < 0|| player.getPosition().y > screenHeight || player.getPosition().y<0){
             player.isAlive = false;
         }
-        else if (player.getPosition().equals(new Vector2D(apple.x, apple.y))){
+        else if (gameLevel.checkPlayerToApple(player.getPosition())){
                 player.new_part();
-
-
-
+                //test level switching
                 if (player.getScore() == 5){
-                    level++;
-                    player.reset(3*tileSize, 9*tileSize);
-                    try{
-                        obstacles = levelLoader.loadLevel(level);
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
+                    gameLevel.nextLevel();
+
                 }
+                gameLevel.newApple();
 
 
-                do{
-                    apple.newApple();
-
-                } while (appleCollidesWithObstacles());
 
 
-            }
+
+        }
 
 
 
@@ -190,6 +178,7 @@ public class Game extends GUI implements Runnable{
     private void gameOver() {
 
         setPlayerDirection(new Vector2D(0,0));
+        gameThread.interrupt();
 
     }
 
@@ -210,17 +199,19 @@ public class Game extends GUI implements Runnable{
             showGrid(g2);
         }
 
-        obstacles.draw(g2, 24);
+        gameLevel.draw(g2, 24);
         if (player.isAlive){
             player.draw(g2);
-            apple.draw(g2);
+            gameLevel.draw(g2, tileSize);
         }
-
-
 
 
         g2.dispose();
 
 
+    }
+
+    public void resetPlayer(int x, int y) {
+        player.reset(x, y);
     }
 }
