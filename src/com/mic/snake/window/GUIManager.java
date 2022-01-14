@@ -18,16 +18,14 @@ public class GUIManager {
     }
 
 
-    public void runProgram(){
+    public void runProgram(CardLayout cardLayout, Window window){
         System.out.println("Starting Game");
         gameScreen.start();
         GUI.GAME_STATES currentState = gameScreen.getState();
 
         if (currentState.equals(GUI.GAME_STATES.GAME_OVER)){
             System.out.println("Game Over");
-            gameScreen.setVisible(false);
-//            gameScreen.getTopLevelAncestor().add(gameOverScreen);
-            gameOverScreen.setVisible(true);
+            cardLayout.show(window.getContentPane(),"gameOverPanel");
         }
     }
 
@@ -71,7 +69,7 @@ class GUIFactory{
 
         gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
 
-        gameOverPanel.setVisible(false);
+        gameOverPanel.setVisible(true);
         return gameOverPanel;
     }
 

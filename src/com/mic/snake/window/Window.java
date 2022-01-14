@@ -8,7 +8,8 @@ public class Window extends JFrame{
 
     Window(int screenWidth, int screenHeight){
         super("Snake");
-        setLayout(new CardLayout());
+        CardLayout cardLayout = new CardLayout();
+        setLayout(cardLayout);
 
         manager = new GUIManager(screenWidth, screenHeight);
         add(manager.gameScreen, "gamePanel");
@@ -18,13 +19,11 @@ public class Window extends JFrame{
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
         pack();
-
         setVisible(true);
         setLocationRelativeTo(null);
 
-        manager.runProgram();
+        manager.runProgram(cardLayout, this);
     }
 
 }
