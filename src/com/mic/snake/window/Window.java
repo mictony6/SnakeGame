@@ -1,30 +1,30 @@
 package com.mic.snake.window;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class Window {
-    JFrame mainFrame;
+public class Window extends JFrame{
+    GUIManager manager ;
 
+    Window(int screenWidth, int screenHeight){
+        super("Snake");
+        setLayout(new CardLayout());
 
-    Window(Game game){
-
-        mainFrame = new JFrame("Snake");
-        mainFrame.add(game);
-
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setResizable(false);
-
-        mainFrame.pack();
-
-        mainFrame.setVisible(true);
-        mainFrame.setLocationRelativeTo(null);
+        manager = new GUIManager(screenWidth, screenHeight);
+        add(manager.gameScreen, "gamePanel");
+        add(manager.gameOverScreen, "gameOverPanel");
 
 
 
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
+        pack();
 
+        setVisible(true);
+        setLocationRelativeTo(null);
 
-        game.start();
+        manager.runProgram();
     }
 
 }

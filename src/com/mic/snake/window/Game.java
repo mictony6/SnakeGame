@@ -3,19 +3,19 @@ package com.mic.snake.window;
 import com.mic.snake.components.Input;
 import com.mic.snake.components.Level;
 import com.mic.snake.components.Vector2D;
-import com.mic.snake.entity.*;
+import com.mic.snake.entity.BoxCollider;
+import com.mic.snake.entity.Snake;
+import com.mic.snake.entity.Star;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Game extends GUI implements Runnable{
+public class Game extends GUI {
     boolean running = false;
-    Thread gameThread;
     final int FPS = 12;
     Snake player ;
     private Level gameLevel;
     private boolean debug;
-    private int starCount = 0;
     private int ramenBoost = 0;
 
 
@@ -58,22 +58,11 @@ public class Game extends GUI implements Runnable{
 
     }
 
-    public static void main(String[] args) {
-        Game game = new Game(720, 600);
-        new Window(game);
-
-
-    }
-
-    public void startGameThread(){
-        gameThread = new Thread(this);
-        gameThread.start();
-
-    }
-
     public void start() {
         gameLevel.newApple();
-        startGameThread();
+        setState(GAME_STATES.PLAYING);
+        run();
+
     }
 
     private void showGrid(Graphics2D g2) {
@@ -88,14 +77,14 @@ public class Game extends GUI implements Runnable{
         }
     }
 
-    @Override
+//    @Override
     public void run() {
         double drawInterval = 1000000000f/FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (gameThread != null){
+        while (getState().equals(GAME_STATES.PLAYING) ){
 
             currentTime = System.nanoTime();
             delta += (currentTime-lastTime);
@@ -109,6 +98,8 @@ public class Game extends GUI implements Runnable{
 
             }
         }
+
+
     }
 
 
@@ -176,9 +167,9 @@ public class Game extends GUI implements Runnable{
     }
 
     private void gameOver() {
-
         setPlayerDirection(new Vector2D(0,0));
-        gameThread.interrupt();
+        setState(GAME_STATES.GAME_OVER);
+        System.out.println("inside Game Over");
 
     }
 
