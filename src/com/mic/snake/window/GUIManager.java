@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Queue;
 
 public class GUIManager {
@@ -73,11 +75,20 @@ class GUIFactory{
         gameOverPanel.setPreferredSize(new Dimension(w,h));
         GridBagConstraints c = new GridBagConstraints();
 
+        InputStream zelda = gameOverPanel.getClass().getResourceAsStream("/ZeldaOracles.ttf");
+        Font zeldaFont = null;
+        try {
+            zeldaFont = Font.createFont(Font.PLAIN, zelda);
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+        Font largeFont = zeldaFont.deriveFont(Font.BOLD, 48);
+
+        Font smallFont = zeldaFont.deriveFont(Font.PLAIN, 20);
         gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
         gameOverPanel.setBackground(Color.black);
-        Font largeFont = new Font("Zelda Oracles", Font.BOLD, 48);
 
-        Font smallFont = new Font("Zelda Oracles", Font.PLAIN, 20);
         JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
         gameOverLabel.setFont(largeFont);
 
