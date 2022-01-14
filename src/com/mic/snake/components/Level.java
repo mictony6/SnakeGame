@@ -7,18 +7,22 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+
 public class Level {
+
+
     public enum TYPE{
         STORY,
-        INFINITE
+        INFINITE;
     }
-
     TYPE type;
+
     int state, starCount;
     Apple apple;
     LevelLoader levelLoader;
     Game g;
-
+    public Vector2D startPos = new Vector2D(48,48);
     ColliderGroup obstacles;
 
 
@@ -40,20 +44,39 @@ public class Level {
         apple.draw(g2);
     }
 
-    public void nextLevel(){
+    public void retry() {
+        starCount = 0;
+
         try {
-            state++;
-            obstacles = levelLoader.loadLevel(state);
-            for (BoxCollider e: obstacles.get()){
-                if (e instanceof Star){
-                    starCount++;
-                }
-                else if (e instanceof Empty){
-                    g.resetPlayer(e.x, e.y);
-                }
-            }
+            loadLevel();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        System.out.println("starCount after reloading: "+starCount);
+    }
+
+    public void nextLevel(){
+        starCount = 0;
+
+        try {
+            state++;
+            loadLevel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadLevel() throws IOException {
+        obstacles = levelLoader.loadLevel(state);
+        for (BoxCollider e: obstacles.get()){
+            if (e instanceof Star){
+                starCount++;
+                System.out.println("star count: "+starCount);
+            }
+            else if (e instanceof Empty){
+                startPos = new Vector2D(e.x, e.y);
+                g.resetPlayer(e.x, e.y);
+            }
         }
     }
 
@@ -91,7 +114,9 @@ public class Level {
     }
 
     void checkStarCount(){
+        System.out.println("currentCount:"+starCount);
         if (starCount==0 && state > 0){
+            System.out.println("Got all stars");
             nextLevel();
             newApple();
         }
@@ -101,4 +126,7 @@ public class Level {
         checkStarCount();
     }
 
+    public int getState() {
+        return state;
+    }
 }

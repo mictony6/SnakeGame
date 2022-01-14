@@ -1,7 +1,12 @@
 package com.mic.snake.window;
 
+import com.mic.snake.mouse.ButtonListener;
+import com.mic.snake.mouse.GameStates;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Queue;
 
 public class GUIManager {
@@ -9,6 +14,7 @@ public class GUIManager {
     GUI gameOverScreen, mainMenuScreen, scoreScreen;
     public Queue<GUI> guiQueue;
     int w, h;
+    GameStates currentState;
 
     GUIManager(int w, int h){
         this.w = w;
@@ -20,14 +26,39 @@ public class GUIManager {
 
     public void runProgram(CardLayout cardLayout, Window window){
         System.out.println("Starting Game");
-        gameScreen.start();
-        GUI.GAME_STATES currentState = gameScreen.getState();
 
-        if (currentState.equals(GUI.GAME_STATES.GAME_OVER)){
-            System.out.println("Game Over");
-            cardLayout.show(window.getContentPane(),"gameOverPanel");
-        }
+        gameScreen.start();
+        currentState = gameScreen.getState();
+        do {
+
+            System.out.println("looping in manager");
+            System.out.println(gameScreen.getState());
+            if (currentState.equals(GameStates.GAME_OVER)) {
+                cardLayout.show(window.getContentPane(), "gameOverPanel");
+
+                if (gameOverScreen.getState().equals(GameStates.RETRY)){
+                    gameOverScreen.setState(GameStates.PLAYING);
+                    System.out.println("Retrying...");
+                    cardLayout.show(window.getContentPane(), "gamePanel");
+
+                    gameScreen.retry();
+                }
+                else if (gameOverScreen.getState().equals(GameStates.EXIT)){
+                    gameScreen.setState(GameStates.EXIT);
+                    System.out.println("Exiting...");
+                }
+
+            }
+            currentState = gameScreen.getState();
+        }while (currentState!= GameStates.EXIT);
+        window.dispose();
+
+
+
+
     }
+
+
 
 
 
@@ -44,9 +75,9 @@ class GUIFactory{
 
         gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
         gameOverPanel.setBackground(Color.black);
-        Font largeFont = new Font("Arial", Font.BOLD, 48);
+        Font largeFont = new Font("Zelda Oracles", Font.BOLD, 48);
 
-        Font smallFont = new Font("Arial", Font.PLAIN, 20);
+        Font smallFont = new Font("Zelda Oracles", Font.PLAIN, 20);
         JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
         gameOverLabel.setFont(largeFont);
 
@@ -56,6 +87,7 @@ class GUIFactory{
         gameOverPanel.add(gameOverLabel, c);
 
         JButton retryButton = new JButton("Retry");
+        retryButton.setFont(smallFont);
         retryButton.setContentAreaFilled(false);
         retryButton.setForeground(Color.white);
 
@@ -65,11 +97,21 @@ class GUIFactory{
         JButton exitButton = new JButton("Exit");
         exitButton.setContentAreaFilled(false);
         exitButton.setForeground(Color.white);
+        exitButton.setFont(smallFont);
         gameOverPanel.add(exitButton, c);
 
         gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
 
         gameOverPanel.setVisible(true);
+        gameOverPanel.setState(GameStates.GAME_OVER);
+
+        ButtonListener listener = new ButtonListener(gameOverPanel);
+
+        retryButton.addActionListener(listener);
+        retryButton.setActionCommand("retry");
+        exitButton.addActionListener(listener);
+        exitButton.setActionCommand("exit");
+        gameOverPanel.setState(GameStates.PLAYING);
         return gameOverPanel;
     }
 

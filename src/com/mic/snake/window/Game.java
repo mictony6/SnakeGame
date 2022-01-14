@@ -6,6 +6,7 @@ import com.mic.snake.components.Vector2D;
 import com.mic.snake.entity.BoxCollider;
 import com.mic.snake.entity.Snake;
 import com.mic.snake.entity.Star;
+import com.mic.snake.mouse.GameStates;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ public class Game extends GUI {
         vSlots = screenHeight/tileSize;
 
         player = new Snake(this);
-        addKeyListener(new Input(this));
 
 
 
@@ -59,8 +59,9 @@ public class Game extends GUI {
     }
 
     public void start() {
+        player.isAlive = true;
         gameLevel.newApple();
-        setState(GAME_STATES.PLAYING);
+        setState(GameStates.PLAYING);
         run();
 
     }
@@ -84,7 +85,7 @@ public class Game extends GUI {
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (getState().equals(GAME_STATES.PLAYING) ){
+        while (getState().equals(GameStates.PLAYING) ){
 
             currentTime = System.nanoTime();
             delta += (currentTime-lastTime);
@@ -92,6 +93,7 @@ public class Game extends GUI {
             lastTime = currentTime;
 
             if (delta-drawInterval>=0){
+
                 update();
                 repaint();
                 delta-=drawInterval;
@@ -143,6 +145,7 @@ public class Game extends GUI {
 
         if (!player.isAlive){
             gameOver();
+
         }
         else if (player.getPosition().x > screenWidth || player.getPosition().x < 0|| player.getPosition().y > screenHeight || player.getPosition().y<0){
             player.isAlive = false;
@@ -168,7 +171,7 @@ public class Game extends GUI {
 
     private void gameOver() {
         setPlayerDirection(new Vector2D(0,0));
-        setState(GAME_STATES.GAME_OVER);
+        setState(GameStates.GAME_OVER);
         System.out.println("inside Game Over");
 
     }
@@ -205,4 +208,14 @@ public class Game extends GUI {
     public void resetPlayer(int x, int y) {
         player.reset(x, y);
     }
+
+    public void retry(){
+        setState(GameStates.PLAYING);
+        player.isAlive = true;
+        gameLevel.retry();
+        run();
+
+    }
+
+
 }

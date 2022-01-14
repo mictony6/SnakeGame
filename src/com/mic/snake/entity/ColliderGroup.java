@@ -49,4 +49,8 @@ public class ColliderGroup {
                 ", size=" + size +
                 '}';
     }
+
+    public void clear(){
+        group.clear();
+    }
 }
