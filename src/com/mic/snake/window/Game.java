@@ -1,6 +1,5 @@
 package com.mic.snake.window;
 
-import com.mic.snake.components.Input;
 import com.mic.snake.components.Level;
 import com.mic.snake.components.Vector2D;
 import com.mic.snake.entity.BoxCollider;
@@ -28,22 +27,21 @@ public class Game extends GUI {
 
 
 
-    Game(int w, int h){
-        super();
+    Game(GUIManager manager){
+        super(manager);
 
         debug = false;
-        gameLevel = new Level(Level.TYPE.STORY , this);
 
         setBackground(new Color(50,80,35));
         setDoubleBuffered(true);
 
         setFocusable(true);
-        screenWidth = w;
-        screenHeight = h;
         hSlots = screenWidth/tileSize;
         vSlots = screenHeight/tileSize;
 
         player = new Snake(this);
+        gameLevel = new Level(this);
+
 
 
 
@@ -61,7 +59,6 @@ public class Game extends GUI {
     public void start() {
         player.isAlive = true;
         gameLevel.newApple();
-        setState(GameStates.PLAYING);
         run();
 
     }
@@ -85,7 +82,7 @@ public class Game extends GUI {
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (getState().equals(GameStates.PLAYING) ){
+        while (manager.getState().equals(GameStates.PLAYING)){
 
             currentTime = System.nanoTime();
             delta += (currentTime-lastTime);
@@ -171,8 +168,7 @@ public class Game extends GUI {
 
     private void gameOver() {
         setPlayerDirection(new Vector2D(0,0));
-        setState(GameStates.GAME_OVER);
-        System.out.println("inside Game Over");
+        manager.setState(GameStates.GAME_OVER);
 
     }
 
@@ -210,7 +206,7 @@ public class Game extends GUI {
     }
 
     public void retry(){
-        setState(GameStates.PLAYING);
+        manager.setState(GameStates.PLAYING);
         player.isAlive = true;
         gameLevel.retry();
         run();
@@ -218,4 +214,8 @@ public class Game extends GUI {
     }
 
 
+    public void winGame() {
+
+        manager.setState(GameStates.FINISHED);
+    }
 }

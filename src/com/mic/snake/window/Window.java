@@ -16,6 +16,8 @@ public class Window extends JFrame{
         manager = new GUIManager(screenWidth, screenHeight);
         add(manager.gameScreen, "gamePanel");
         add(manager.gameOverScreen, "gameOverPanel");
+        add(manager.mainMenuScreen, "menuPanel");
+        add(manager.winScreen, "winPanel");
 
 
 

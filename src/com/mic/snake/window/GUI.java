@@ -6,18 +6,12 @@ import javax.swing.*;
 
 public class GUI extends JPanel {
     int screenWidth, screenHeight;
+    GUIManager manager;
 
-
-
-    private GameStates state;
-
-    public GameStates getState() {
-        return state;
-    }
-
-    public void setState(GameStates state) {
-        this.state = state;
-
+    GUI(GUIManager manager){
+        this.manager = manager;
+        this.screenWidth = manager.w;
+        this.screenHeight = manager.h;
     }
 
     public void resetGUI(){

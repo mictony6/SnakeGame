@@ -1,135 +1,180 @@
 package com.mic.snake.window;
 
+import com.mic.snake.components.GameFont;
 import com.mic.snake.mouse.ButtonListener;
 import com.mic.snake.mouse.GameStates;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Queue;
+
 
 public class GUIManager {
     Game gameScreen;
-    GUI gameOverScreen, mainMenuScreen, scoreScreen;
-    public Queue<GUI> guiQueue;
+    GUI gameOverScreen, mainMenuScreen, winScreen;
     int w, h;
-    GameStates currentState;
+    GameStates currentState = GameStates.MENU;
+    ButtonListener listener;
 
     GUIManager(int w, int h){
         this.w = w;
         this.h = h;
-        gameScreen = GUIFactory.getGameScreen(w, h);
-        gameOverScreen = GUIFactory.getGameOverScreen(w, h);
+        listener = new ButtonListener(this);
+        gameScreen = GUIFactory.getGameScreen(this);
+        gameOverScreen = GUIFactory.getGameOverScreen(this, listener);
+        mainMenuScreen = GUIFactory.getMenuScreen(this, listener);
+        winScreen = GUIFactory.getWinScreen(this, listener);
     }
 
 
     public void runProgram(CardLayout cardLayout, Window window){
         System.out.println("Starting Game");
 
-        gameScreen.start();
-        currentState = gameScreen.getState();
         do {
-
-            System.out.println("looping in manager");
-            System.out.println(gameScreen.getState());
-            if (currentState.equals(GameStates.GAME_OVER)) {
-                cardLayout.show(window.getContentPane(), "gameOverPanel");
-
-                if (gameOverScreen.getState().equals(GameStates.RETRY)){
-                    gameOverScreen.setState(GameStates.PLAYING);
-                    System.out.println("Retrying...");
+            switch (currentState) {
+                case PLAYING -> {
                     cardLayout.show(window.getContentPane(), "gamePanel");
-
+                    gameScreen.start();
+                }
+                case RETRY -> {
+                    cardLayout.show(window.getContentPane(), "gamePanel");
                     gameScreen.retry();
-                }
-                else if (gameOverScreen.getState().equals(GameStates.EXIT)){
-                    gameScreen.setState(GameStates.EXIT);
-                    System.out.println("Exiting...");
-                }
 
+                }
+                case GAME_OVER -> cardLayout.show(window.getContentPane(), "gameOverPanel");
+                case MENU -> cardLayout.show(window.getContentPane(), "menuPanel");
+                case FINISHED -> cardLayout.show(window.getContentPane(), "winPanel");
             }
-            currentState = gameScreen.getState();
         }while (currentState!= GameStates.EXIT);
         window.dispose();
 
 
-
-
     }
 
 
+    public void setState(GameStates state) {
+        currentState = state;
+    }
 
-
-
+    public GameStates getState() {
+        return currentState;
+    }
 }
 
 class GUIFactory{
 
-    static GUI getGameOverScreen(int w, int h){
-        GUI gameOverPanel = new GUI();
+    static JButton makeButton(String title, String actionCommand, Font font, ButtonListener listener){
+        JButton button = new JButton(title);
+        button.addActionListener(listener);
+        button.setActionCommand(actionCommand);
+        button.setForeground(Color.white);
+        button.setFont(font);
+        button.setContentAreaFilled(false);
+
+        return button;
+    }
+
+    static GUI getGameOverScreen(GUIManager manager, ButtonListener listener){
+        GameFont fonts = new GameFont();
+        GUI gameOverPanel = new GUI(manager);
         gameOverPanel.setLayout(new GridBagLayout());
         gameOverPanel.setDoubleBuffered(true);
-        gameOverPanel.setPreferredSize(new Dimension(w,h));
-        GridBagConstraints c = new GridBagConstraints();
-
-        InputStream zelda = gameOverPanel.getClass().getResourceAsStream("/ZeldaOracles.ttf");
-        Font zeldaFont = null;
-        try {
-            zeldaFont = Font.createFont(Font.PLAIN, zelda);
-
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-        }
-        Font largeFont = zeldaFont.deriveFont(Font.BOLD, 48);
-
-        Font smallFont = zeldaFont.deriveFont(Font.PLAIN, 20);
-        gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
+        gameOverPanel.setPreferredSize(new Dimension(manager.w, manager.h));
         gameOverPanel.setBackground(Color.black);
 
-        JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
-        gameOverLabel.setFont(largeFont);
+        GridBagConstraints c = new GridBagConstraints();
 
-        gameOverLabel.setForeground(Color.white);
-        c.gridx = 0;
-        c.gridheight = 2;
-        gameOverPanel.add(gameOverLabel, c);
-
-        JButton retryButton = new JButton("Retry");
-        retryButton.setFont(smallFont);
-        retryButton.setContentAreaFilled(false);
-        retryButton.setForeground(Color.white);
-
-        c.gridheight = 1;
-        gameOverPanel.add(retryButton, c);
-
-        JButton exitButton = new JButton("Exit");
-        exitButton.setContentAreaFilled(false);
-        exitButton.setForeground(Color.white);
-        exitButton.setFont(smallFont);
-        gameOverPanel.add(exitButton, c);
 
         gameOverPanel.add(new JSeparator(SwingConstants.VERTICAL), c);
 
+        c.gridy = 0;
+        c.gridheight = 2;
+        c.gridwidth = 4;
+
+        JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
+        gameOverLabel.setFont(fonts.getLargeFont());
+        gameOverLabel.setForeground(Color.white);
+        gameOverPanel.add(gameOverLabel, c);
+
+
+        c.gridx = 2;
+        c.gridheight = 1;
+        c.gridy = 2;
+
+        JButton retryButton = makeButton("Retry", "retry", fonts.getSmallFont(), listener);
+        gameOverPanel.add(retryButton, c);
+
+        c.gridy = 3;
+
+        JButton exitButton = makeButton("Exit", "exit", fonts.getSmallFont(), listener);
+        gameOverPanel.add(exitButton, c);
+
+
         gameOverPanel.setVisible(true);
-        gameOverPanel.setState(GameStates.GAME_OVER);
-
-        ButtonListener listener = new ButtonListener(gameOverPanel);
-
-        retryButton.addActionListener(listener);
-        retryButton.setActionCommand("retry");
-        exitButton.addActionListener(listener);
-        exitButton.setActionCommand("exit");
-        gameOverPanel.setState(GameStates.PLAYING);
         return gameOverPanel;
+    }
+    static GUI getMenuScreen(GUIManager manager, ButtonListener listener){
+        GameFont fonts = new GameFont();
+        GUI menuPanel = new GUI(manager);
+        menuPanel.setLayout(new GridBagLayout());
+        menuPanel.setBackground(new Color(50,80,35));
+        menuPanel.setPreferredSize(new Dimension(manager.w,manager.h));
+
+
+        GridBagConstraints c = new GridBagConstraints();
+
+
+
+
+        c.gridheight = 2;
+        c.gridwidth = 4;
+        c.gridy = 0;
+        c.gridx = 0;
+        JLabel titleLabel = new JLabel("Snake");
+        titleLabel.setFont(fonts.getLargeFont());
+        titleLabel.setForeground(Color.white);
+        menuPanel.add(titleLabel, c);
+
+
+
+
+
+        c.gridheight=1;
+        c.gridy = 2;
+        JButton playButton = makeButton("Play", "play", fonts.getSmallFont(), listener);
+        menuPanel.add(playButton, c);
+
+
+        c.gridy = 3;
+        JButton exitButton = makeButton("Exit", "exit", fonts.getSmallFont(), listener);
+        menuPanel.add(exitButton, c);
+
+        return menuPanel;
+
+
+
+    }
+
+    static GUI getWinScreen(GUIManager manager, ButtonListener listener){
+        GUI winPanel = new GUI(manager);
+        GameFont fonts = new GameFont();
+
+
+        winPanel.setBackground(new Color(120,50,10));
+        winPanel.setLayout(new GridBagLayout());
+        winPanel.setPreferredSize(new Dimension(manager.w, manager.h));
+        GridBagConstraints c = new GridBagConstraints();
+
+        JLabel winLabel = new JLabel("You Won!");
+        winLabel.setFont(fonts.getLargeFont());
+        winLabel.setForeground(Color.white);
+        winPanel.add(winLabel, c);
+        winPanel.setVisible(true);
+
+        return winPanel;
     }
 
 
-
-
-    static Game getGameScreen(int w, int h){
-        return new Game(w, h);
+    static Game getGameScreen(GUIManager manager){
+        return new Game(manager);
     }
 }
