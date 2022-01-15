@@ -11,32 +11,28 @@ import java.util.ArrayList;
 
 public class Level {
 
-
-    public enum TYPE{
-        STORY,
-        INFINITE;
-    }
-    TYPE type;
-
     int state, starCount;
+    private int numOfLevelsLeft = 5;
+    public Vector2D startPos = new Vector2D(48,48);
+
+
+    Game g;
     Apple apple;
     LevelLoader levelLoader;
-    Game g;
-    public Vector2D startPos = new Vector2D(48,48);
     ColliderGroup obstacles;
 
 
-    public Level(TYPE type, Game g){
+
+    public Level(Game g){
         levelLoader  = new LevelLoader();
-        this.type = type;
-        this.state = 0;
-        try {
-            this.obstacles = levelLoader.loadLevel(state);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         this.apple = new Apple(g);
         this.g = g;
+        this.state = -1;
+
+
+        nextLevel();
+
     }
 
     public void draw(Graphics2D g2, int size){
@@ -52,18 +48,28 @@ public class Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("starCount after reloading: "+starCount);
     }
 
     public void nextLevel(){
         starCount = 0;
 
-        try {
-            state++;
-            loadLevel();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (numOfLevelsLeft >=0 ){
+
+            try {
+                state++;
+                loadLevel();
+                numOfLevelsLeft--;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else{
+            System.out.println("You won");
+            g.winGame();
         }
+
+
     }
 
     private void loadLevel() throws IOException {
@@ -71,7 +77,6 @@ public class Level {
         for (BoxCollider e: obstacles.get()){
             if (e instanceof Star){
                 starCount++;
-                System.out.println("star count: "+starCount);
             }
             else if (e instanceof Empty){
                 startPos = new Vector2D(e.x, e.y);
@@ -114,9 +119,7 @@ public class Level {
     }
 
     void checkStarCount(){
-        System.out.println("currentCount:"+starCount);
         if (starCount==0 && state > 0){
-            System.out.println("Got all stars");
             nextLevel();
             newApple();
         }
@@ -126,7 +129,4 @@ public class Level {
         checkStarCount();
     }
 
-    public int getState() {
-        return state;
-    }
 }

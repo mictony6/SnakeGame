@@ -8,26 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonListener implements ActionListener {
-    GUI gui;
+    GUIManager manager;
 
-    public ButtonListener(GUI gui) {
-        this.gui = gui;
+    public ButtonListener(GUIManager manager) {
+        this.manager = manager;
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()){
-            case "retry":
-                //TODO: retry logic
-                System.out.println("User wants to retry.");
-                gui.setState(GameStates.RETRY);
-                break;
-            case "exit":
-                //TODO: exit logic
-                System.out.println("User wants to exit.");
-                gui.setState(GameStates.EXIT);
-                break;
+        switch (e.getActionCommand()) {
+            case "retry" -> manager.setState(GameStates.RETRY);
+            case "exit" -> manager.setState(GameStates.EXIT);
+            case "play" -> manager.setState(GameStates.PLAYING);
         }
     }
 
