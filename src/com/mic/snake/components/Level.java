@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Level {
 
-    int state, starCount;
+    int levelNUM, starCount;
     private int numOfLevelsLeft = 5;
     public Vector2D startPos = new Vector2D(48,48);
 
@@ -25,10 +25,10 @@ public class Level {
 
     public Level(Game g){
         levelLoader  = new LevelLoader();
-
+        obstacles = new ColliderGroup();
         this.apple = new Apple(g);
         this.g = g;
-        this.state = -1;
+        this.levelNUM = -1;
 
 
         nextLevel();
@@ -57,7 +57,7 @@ public class Level {
         if (numOfLevelsLeft >=0 ){
 
             try {
-                state++;
+                levelNUM++;
                 loadLevel();
                 numOfLevelsLeft--;
 
@@ -73,8 +73,9 @@ public class Level {
     }
 
     private void loadLevel() throws IOException {
-        obstacles = levelLoader.loadLevel(state);
-        for (BoxCollider e: obstacles.get()){
+        obstacles.clear();
+        for (BoxCollider e: levelLoader.loadLevel(levelNUM).get()){
+            obstacles.add(e);
             if (e instanceof Star){
                 starCount++;
             }
@@ -119,7 +120,7 @@ public class Level {
     }
 
     void checkStarCount(){
-        if (starCount==0 && state > 0){
+        if (starCount==0 && levelNUM > 0){
             nextLevel();
             newApple();
         }

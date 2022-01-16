@@ -1,6 +1,5 @@
 package com.mic.snake.components;
 
-import com.mic.snake.window.Game;
 import com.mic.snake.window.Window;
 
 import java.awt.event.KeyAdapter;
@@ -16,7 +15,6 @@ public class Input extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
-        System.out.println("pressed KEY!!!");
         switch(e.getKeyCode()){
             case KeyEvent.VK_W:
                 window.getGame().setPlayerDirection(Vector2D.up());

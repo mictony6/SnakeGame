@@ -6,6 +6,8 @@ import com.mic.snake.entity.BoxCollider;
 import com.mic.snake.entity.Snake;
 import com.mic.snake.entity.Star;
 import com.mic.snake.mouse.GameStates;
+import com.mic.snake.window.GUI;
+import com.mic.snake.window.GUIManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class Game extends GUI {
 
 
 
-    Game(GUIManager manager){
+    public Game(GUIManager manager){
         super(manager);
 
         debug = false;
@@ -75,8 +77,10 @@ public class Game extends GUI {
         }
     }
 
-//    @Override
     public void run() {
+        player.isAlive = true;
+
+
         double drawInterval = 1000000000f/FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -97,6 +101,7 @@ public class Game extends GUI {
 
             }
         }
+
 
 
     }
@@ -156,13 +161,7 @@ public class Game extends GUI {
                 }
                 gameLevel.newApple();
 
-
-
-
-
         }
-
-
 
     }
 
@@ -190,9 +189,11 @@ public class Game extends GUI {
         }
 
         gameLevel.draw(g2, 24);
-        if (player.isAlive){
+        if (manager.getState().equals(GameStates.PLAYING)){
+
             player.draw(g2);
             gameLevel.draw(g2, tileSize);
+
         }
 
 
@@ -206,8 +207,6 @@ public class Game extends GUI {
     }
 
     public void retry(){
-        manager.setState(GameStates.PLAYING);
-        player.isAlive = true;
         gameLevel.retry();
         run();
 
@@ -216,6 +215,6 @@ public class Game extends GUI {
 
     public void winGame() {
 
-        manager.setState(GameStates.FINISHED);
+        manager.setState(GameStates.WIN);
     }
 }

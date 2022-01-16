@@ -11,7 +11,7 @@ import java.awt.*;
 public class GUIManager {
     Game gameScreen;
     GUI gameOverScreen, mainMenuScreen, winScreen;
-    int w, h;
+    public int w, h;
     GameStates currentState = GameStates.MENU;
     ButtonListener listener;
 
@@ -38,16 +38,17 @@ public class GUIManager {
                 case RETRY -> {
                     cardLayout.show(window.getContentPane(), "gamePanel");
                     gameScreen.retry();
+                    setState(GameStates.PLAYING);
+
 
                 }
                 case GAME_OVER -> cardLayout.show(window.getContentPane(), "gameOverPanel");
                 case MENU -> cardLayout.show(window.getContentPane(), "menuPanel");
-                case FINISHED -> cardLayout.show(window.getContentPane(), "winPanel");
+                case WIN -> cardLayout.show(window.getContentPane(), "winPanel");
+
             }
         }while (currentState!= GameStates.EXIT);
         window.dispose();
-
-
     }
 
 
@@ -58,11 +59,13 @@ public class GUIManager {
     public GameStates getState() {
         return currentState;
     }
+
+
 }
 
-class GUIFactory{
+class GUIFactory {
 
-    static JButton makeButton(String title, String actionCommand, Font font, ButtonListener listener){
+    static JButton makeButton(String title, String actionCommand, Font font, ButtonListener listener) {
         JButton button = new JButton(title);
         button.addActionListener(listener);
         button.setActionCommand(actionCommand);
@@ -73,7 +76,7 @@ class GUIFactory{
         return button;
     }
 
-    static GUI getGameOverScreen(GUIManager manager, ButtonListener listener){
+    static GUI getGameOverScreen(GUIManager manager, ButtonListener listener) {
         GameFont fonts = new GameFont();
         GUI gameOverPanel = new GUI(manager);
         gameOverPanel.setLayout(new GridBagLayout());
@@ -112,17 +115,16 @@ class GUIFactory{
         gameOverPanel.setVisible(true);
         return gameOverPanel;
     }
-    static GUI getMenuScreen(GUIManager manager, ButtonListener listener){
+
+    static GUI getMenuScreen(GUIManager manager, ButtonListener listener) {
         GameFont fonts = new GameFont();
         GUI menuPanel = new GUI(manager);
         menuPanel.setLayout(new GridBagLayout());
-        menuPanel.setBackground(new Color(50,80,35));
-        menuPanel.setPreferredSize(new Dimension(manager.w,manager.h));
+        menuPanel.setBackground(new Color(50, 80, 35));
+        menuPanel.setPreferredSize(new Dimension(manager.w, manager.h));
 
 
         GridBagConstraints c = new GridBagConstraints();
-
-
 
 
         c.gridheight = 2;
@@ -135,10 +137,7 @@ class GUIFactory{
         menuPanel.add(titleLabel, c);
 
 
-
-
-
-        c.gridheight=1;
+        c.gridheight = 1;
         c.gridy = 2;
         JButton playButton = makeButton("Play", "play", fonts.getSmallFont(), listener);
         menuPanel.add(playButton, c);
@@ -151,15 +150,14 @@ class GUIFactory{
         return menuPanel;
 
 
-
     }
 
-    static GUI getWinScreen(GUIManager manager, ButtonListener listener){
+    static GUI getWinScreen(GUIManager manager, ButtonListener listener) {
         GUI winPanel = new GUI(manager);
         GameFont fonts = new GameFont();
 
 
-        winPanel.setBackground(new Color(120,50,10));
+        winPanel.setBackground(new Color(120, 50, 10));
         winPanel.setLayout(new GridBagLayout());
         winPanel.setPreferredSize(new Dimension(manager.w, manager.h));
         GridBagConstraints c = new GridBagConstraints();
@@ -174,7 +172,8 @@ class GUIFactory{
     }
 
 
-    static Game getGameScreen(GUIManager manager){
+    static Game getGameScreen(GUIManager manager) {
         return new Game(manager);
     }
 }
+

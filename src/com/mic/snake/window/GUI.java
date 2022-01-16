@@ -5,16 +5,16 @@ import com.mic.snake.mouse.GameStates;
 import javax.swing.*;
 
 public class GUI extends JPanel {
-    int screenWidth, screenHeight;
-    GUIManager manager;
+    public int screenWidth, screenHeight;
+    public GUIManager manager;
 
-    GUI(GUIManager manager){
+    public GUI(GUIManager manager) {
         this.manager = manager;
         this.screenWidth = manager.w;
         this.screenHeight = manager.h;
     }
 
-    public void resetGUI(){
 
-    }
 }
+
+
