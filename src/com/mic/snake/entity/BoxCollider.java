@@ -4,10 +4,12 @@ import java.awt.*;
 
 public class BoxCollider extends Entity{
     public enum ID{
-        COLLECTIBLE,
-        BREAKABLE,
-        SIMPLE,
-        EMPTY
+        CRATE,
+        STAR,
+        RAMEN,
+        BREAKABLE_CRATE,
+        EMPTY,
+        SPIKE
     }
 
     private ID id;
@@ -29,7 +31,7 @@ public class BoxCollider extends Entity{
         g2.drawImage(img, x, y, size, size, null);
     }
 
-    public boolean collideRect(BoxCollider other){
+    public boolean collidesWith(BoxCollider other){
         return this.x == other.x && this.y == other.y;
     }
 }

@@ -6,7 +6,7 @@ import com.mic.snake.window.Game;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Stack;
 
 
 public class Level {
@@ -20,12 +20,16 @@ public class Level {
     Apple apple;
     LevelLoader levelLoader;
     ColliderGroup obstacles;
+    Stack<BoxCollider> stars;
+    Stack<BoxCollider> ramens;
 
 
 
     public Level(Game g){
         levelLoader  = new LevelLoader();
         obstacles = new ColliderGroup();
+        stars = new Stack<>();
+        ramens = new Stack<>();
         this.apple = new Apple(g);
         this.g = g;
         this.levelNUM = -1;
@@ -41,8 +45,6 @@ public class Level {
     }
 
     public void retry() {
-        starCount = 0;
-
         try {
             loadLevel();
         } catch (IOException e) {
@@ -51,8 +53,6 @@ public class Level {
     }
 
     public void nextLevel(){
-        starCount = 0;
-
 
         if (numOfLevelsLeft >=0 ){
 
@@ -73,15 +73,21 @@ public class Level {
     }
 
     private void loadLevel() throws IOException {
+        starCount = 0;
         obstacles.clear();
+        ramens.clear();
         for (BoxCollider e: levelLoader.loadLevel(levelNUM).get()){
-            obstacles.add(e);
-            if (e instanceof Star){
-                starCount++;
-            }
-            else if (e instanceof Empty){
-                startPos = new Vector2D(e.x, e.y);
-                g.resetPlayer(e.x, e.y);
+            switch (e.getId()) {
+                case STAR -> {
+                    starCount++;
+                    obstacles.add(e);
+                }
+                case RAMEN -> ramens.push(e);
+                case EMPTY -> {
+                    startPos = new Vector2D(e.x, e.y);
+                    g.resetPlayer(e.x, e.y);
+                }
+                default -> obstacles.add(e);
             }
         }
     }
@@ -90,11 +96,15 @@ public class Level {
         return obstacles.get();
     }
 
+
+
+
     public void killObject(BoxCollider o){
+        obstacles.kill(o);
         if (o instanceof Star){
             starCount--;
         }
-        obstacles.kill(o);
+
     }
 
     boolean appleCollidesWithObstacles(){
@@ -120,7 +130,7 @@ public class Level {
     }
 
     void checkStarCount(){
-        if (starCount==0 && levelNUM > 0){
+        if (starCount == 0  && levelNUM > 0){
             nextLevel();
             newApple();
         }
@@ -130,4 +140,11 @@ public class Level {
         checkStarCount();
     }
 
+
+    public void newRamen() {
+
+        if (!ramens.empty()){
+            obstacles.add(ramens.pop());
+        }
+    }
 }

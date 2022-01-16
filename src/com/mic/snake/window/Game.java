@@ -119,16 +119,18 @@ public class Game extends GUI {
         for (BoxCollider e: gameLevel.getObstacleGroup()){
             if( player.collidesWith(e) ){
                 switch(e.getId()){
-                    case SIMPLE :
+                    case CRATE:
+                    case SPIKE:
                         player.isAlive = false;
                         break;
-                    case COLLECTIBLE:
-                        if (!(e instanceof Star)) {
-                            ramenBoost++;
-                        }
+                    case STAR:
                         toBeRemoved.add(e);
                         break;
-                    case BREAKABLE:
+                    case RAMEN:
+                        ramenBoost++;
+                        toBeRemoved.add(e);
+                        break;
+                    case BREAKABLE_CRATE:
                         if( ramenBoost > 0){
                             toBeRemoved.add(e);
                             ramenBoost--;
@@ -140,6 +142,7 @@ public class Game extends GUI {
                 }
             }
         }
+
 
         for (BoxCollider e: toBeRemoved){
             gameLevel.killObject(e);
@@ -155,7 +158,12 @@ public class Game extends GUI {
         else if (gameLevel.checkPlayerToApple(player.getPosition())){
                 player.new_part();
                 //test level switching
+
+                if (player.getScore() % 5 == 0){
+                    gameLevel.newRamen();
+                }
                 if (player.getScore() == 5){
+                    System.out.println("next lev" );
                     gameLevel.nextLevel();
 
                 }

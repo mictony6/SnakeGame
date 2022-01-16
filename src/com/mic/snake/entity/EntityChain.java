@@ -3,10 +3,7 @@ package com.mic.snake.entity;
 
 import com.mic.snake.components.Vector2D;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EntityChain {
     BoxCollider head;
@@ -16,7 +13,7 @@ public class EntityChain {
     EntityChain(int x, int y){
 
 
-        head = new BoxCollider(x, y, BoxCollider.ID.SIMPLE);
+        head = new BoxCollider(x, y, BoxCollider.ID.EMPTY);
         head.direction = new Vector2D(0,0);
         tail = new Entity();
         tail.direction = new Vector2D(0,0);
@@ -45,7 +42,7 @@ public class EntityChain {
 
     ArrayList<Entity> getArrayList(){
         Entity current = head;
-        ArrayList<Entity> chain = new ArrayList<Entity>();
+        ArrayList<Entity> chain = new ArrayList<>();
         while (current != tail){
             chain.add(current);
             current = current.next;

@@ -41,11 +41,11 @@ public class LevelLoader {
             for (Integer c: r){
 
                 switch (c) {
-                    case 0 -> colliders.add(new Crate(x * tileSize, y * tileSize, BoxCollider.ID.SIMPLE));
-                    case 1 -> colliders.add(new SpikeBall(x * tileSize, y * tileSize, BoxCollider.ID.SIMPLE));
-                    case 2 -> colliders.add(new Star(x * tileSize, y * tileSize, BoxCollider.ID.COLLECTIBLE));
-                    case 3 -> colliders.add(new Ramen(x * tileSize, y * tileSize, BoxCollider.ID.COLLECTIBLE));
-                    case 4 -> colliders.add(new BreakableCrate(x * tileSize, y * tileSize, BoxCollider.ID.BREAKABLE));
+                    case 0 -> colliders.add(new Crate(x * tileSize, y * tileSize, BoxCollider.ID.CRATE));
+                    case 1 -> colliders.add(new SpikeBall(x * tileSize, y * tileSize, BoxCollider.ID.SPIKE));
+                    case 2 -> colliders.add(new Star(x * tileSize, y * tileSize, BoxCollider.ID.STAR));
+                    case 3 -> colliders.add(new Ramen(x * tileSize, y * tileSize, BoxCollider.ID.RAMEN));
+                    case 4 -> colliders.add(new BreakableCrate(x * tileSize, y * tileSize, BoxCollider.ID.BREAKABLE_CRATE));
                     case 6 -> colliders.add(new Empty(x*tileSize, y*tileSize, BoxCollider.ID.EMPTY));
                 }
                 x++;

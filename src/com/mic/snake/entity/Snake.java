@@ -47,6 +47,10 @@ public class Snake {
         return direction;
     }
 
+    public BoxCollider getHead(){
+        return snake.head;
+    }
+
     public void update(){
         Entity part = snake.tail.prev;
         while (part != snake.head && !direction.equals(new Vector2D(0,0))){
@@ -160,7 +164,7 @@ public class Snake {
     }
 
     public boolean collidesWith(BoxCollider other){
-            return snake.head.collideRect(other);
+            return snake.head.collidesWith(other);
 
     }
 

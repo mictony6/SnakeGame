@@ -23,6 +23,7 @@ public class ColliderGroup {
 
     public void kill(BoxCollider entity){
         group.remove(entity);
+        size --;
 
     }
 
@@ -52,5 +53,10 @@ public class ColliderGroup {
 
     public void clear(){
         group.clear();
+        size = 0 ;
+    }
+
+    public int length(){
+        return size;
     }
 }
