@@ -55,6 +55,7 @@ public class SoundManager {
                 currentPlaying.play();
             }
             case HIT -> hit.play();
+            case EXIT -> currentPlaying.stop();
         }
         lastState = currentState;
 
