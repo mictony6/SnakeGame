@@ -36,7 +36,6 @@ public class GameManager {
         gameScreen.setSoundManager(soundManager);
 
         do {
-            soundManager.update(currentState);
 
 
             switch (currentState) {
@@ -58,7 +57,10 @@ public class GameManager {
 
             }
 
+            soundManager.update(currentState);
+
         }while (currentState!= GameStates.EXIT);
+
         window.dispose();
     }
 
