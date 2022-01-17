@@ -4,10 +4,8 @@ import com.mic.snake.components.Level;
 import com.mic.snake.components.Vector2D;
 import com.mic.snake.entity.BoxCollider;
 import com.mic.snake.entity.Snake;
-import com.mic.snake.entity.Star;
 import com.mic.snake.mouse.GameStates;
-import com.mic.snake.window.GUI;
-import com.mic.snake.window.GUIManager;
+import com.mic.snake.sound.SoundManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,6 +17,7 @@ public class Game extends GUI {
     private Level gameLevel;
     private boolean debug;
     private int ramenBoost = 0;
+    SoundManager soundManager;
 
 
 
@@ -29,7 +28,7 @@ public class Game extends GUI {
 
 
 
-    public Game(GUIManager manager){
+    public Game(GameManager manager){
         super(manager);
 
         debug = false;
@@ -63,6 +62,10 @@ public class Game extends GUI {
         gameLevel.newApple();
         run();
 
+    }
+
+    public void setSoundManager(SoundManager soundManager) {
+        this.soundManager = soundManager;
     }
 
     private void showGrid(Graphics2D g2) {
@@ -121,6 +124,7 @@ public class Game extends GUI {
                 switch(e.getId()){
                     case CRATE:
                     case SPIKE:
+                        soundManager.update(GameStates.HIT);
                         player.isAlive = false;
                         break;
                     case STAR:
@@ -128,12 +132,17 @@ public class Game extends GUI {
                         break;
                     case RAMEN:
                         ramenBoost++;
+                        setBackground(new Color(80,80,50));
+                        soundManager.update(GameStates.BOOST);
                         toBeRemoved.add(e);
                         break;
                     case BREAKABLE_CRATE:
                         if( ramenBoost > 0){
                             toBeRemoved.add(e);
                             ramenBoost--;
+                            if (ramenBoost == 0){
+                                setBackground(new Color(50,80,35));
+                            }
                             break;
                         }
                         else{
@@ -159,13 +168,17 @@ public class Game extends GUI {
                 player.new_part();
                 //test level switching
 
-                if (player.getScore() % 5 == 0){
+                if (player.getScore() % 5 == 0 && player.getScore()!=5){
                     gameLevel.newRamen();
+                    soundManager.update(GameStates.NEW_RAMEN);
+
                 }
                 if (player.getScore() == 5){
-                    System.out.println("next lev" );
                     gameLevel.nextLevel();
 
+                }
+                else{
+                    soundManager.update(GameStates.COLLECT);
                 }
                 gameLevel.newApple();
 
@@ -224,5 +237,10 @@ public class Game extends GUI {
     public void winGame() {
 
         manager.setState(GameStates.WIN);
+        soundManager.update(GameStates.WIN);
+    }
+
+    public SoundManager getSoundManger() {
+        return soundManager;
     }
 }

@@ -1,19 +1,23 @@
 package com.mic.snake.window;
 
 import com.mic.snake.components.Input;
+import com.mic.snake.sound.SoundManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame{
-    GUIManager manager ;
+    GameManager manager ;
+    SoundManager soundManager;
 
     Window(int screenWidth, int screenHeight){
         super("Snake");
         CardLayout cardLayout = new CardLayout();
         setLayout(cardLayout);
 
-        manager = new GUIManager(screenWidth, screenHeight);
+        manager = new GameManager(screenWidth, screenHeight);
+
+
         add(manager.gameScreen, "gamePanel");
         add(manager.gameOverScreen, "gameOverPanel");
         add(manager.mainMenuScreen, "menuPanel");

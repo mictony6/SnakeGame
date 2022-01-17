@@ -6,7 +6,10 @@ public enum GameStates {
     EXIT,
     GAME_OVER,
     RETRY,
-    LOADING,
-    FINISHED,
-    WIN
+    WIN,
+    COLLECT,
+    HIT,
+    NEW_LEVEL,
+    NEW_RAMEN,
+    BOOST
 }

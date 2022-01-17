@@ -1,6 +1,7 @@
 package com.mic.snake.components;
 
 import com.mic.snake.entity.*;
+import com.mic.snake.mouse.GameStates;
 import com.mic.snake.window.Game;
 
 import java.awt.*;
@@ -32,10 +33,15 @@ public class Level {
         ramens = new Stack<>();
         this.apple = new Apple(g);
         this.g = g;
-        this.levelNUM = -1;
+        this.levelNUM = 0;
 
 
-        nextLevel();
+        try {
+            numOfLevelsLeft--;
+            loadLevel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -53,6 +59,7 @@ public class Level {
     }
 
     public void nextLevel(){
+        g.getSoundManger().update(GameStates.NEW_LEVEL);
 
         if (numOfLevelsLeft >=0 ){
 

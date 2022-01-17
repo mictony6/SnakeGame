@@ -9,7 +9,8 @@ public class BoxCollider extends Entity{
         RAMEN,
         BREAKABLE_CRATE,
         EMPTY,
-        SPIKE
+        SPIKE,
+        APPLE
     }
 
     private ID id;

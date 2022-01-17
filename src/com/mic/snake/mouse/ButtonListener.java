@@ -1,16 +1,14 @@
 package com.mic.snake.mouse;
 
-import com.mic.snake.window.GUI;
-import com.mic.snake.window.GUIManager;
+import com.mic.snake.window.GameManager;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonListener implements ActionListener {
-    GUIManager manager;
+    GameManager manager;
 
-    public ButtonListener(GUIManager manager) {
+    public ButtonListener(GameManager manager) {
         this.manager = manager;
     }
 
