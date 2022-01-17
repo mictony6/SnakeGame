@@ -1,12 +1,12 @@
 package com.mic.snake.sound;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
-import java.util.Objects;
+import java.net.URL;
 
 public class Sound {
     String name;
     Clip clip;
+    URL url;
     AudioInputStream stream;
 
 
@@ -35,7 +35,9 @@ public class Sound {
         try
         {
             clip = AudioSystem.getClip();
-            stream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/music/"+this.name+".wav")));
+            url = getClass().getResource("/music/"+this.name+".wav");
+            assert url != null;
+            stream = AudioSystem.getAudioInputStream(url);
             clip.open(stream);
             clip.addLineListener(new CloseClipWhenDone());
             setVolume(-12);
