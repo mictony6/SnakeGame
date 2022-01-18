@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
+
 public class Ramen extends BoxCollider{
     public Ramen(int x, int y, ID id){
         super(x, y, id);

@@ -10,6 +10,13 @@ import com.mic.snake.sound.SoundManager;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Game class for creating ang managing the game's logic.
+ * @author Michael Anthony Bitoon
+ * @since 12-01-2021
+ *
+ */
+
 public class Game extends GUI {
     boolean running = false;
     final int FPS = 12;
@@ -26,8 +33,10 @@ public class Game extends GUI {
     public int vSlots;
 
 
-
-
+    /**
+     *
+     * @param manager the game manager
+     */
     public Game(GameManager manager){
         super(manager);
 
@@ -57,6 +66,9 @@ public class Game extends GUI {
 
     }
 
+    /**
+     * Starts the game loop.
+     */
     public void start() {
         player.isAlive = true;
         gameLevel.newApple();
@@ -64,10 +76,18 @@ public class Game extends GUI {
 
     }
 
+    /**
+     * Sets the game's sound.
+     * @param soundManager
+     */
     public void setSoundManager(SoundManager soundManager) {
         this.soundManager = soundManager;
     }
 
+    /**
+     * Used for debugging. Shows the individual grids in the game.
+     * @param g2
+     */
     private void showGrid(Graphics2D g2) {
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(1));
@@ -79,7 +99,9 @@ public class Game extends GUI {
             g2.drawLine(i*tileSize,0,  i*tileSize, screenHeight);
         }
     }
-
+/**
+ * The game loop that runs based on the game's set FPS.
+ */
     public void run() {
         player.isAlive = true;
 
@@ -110,7 +132,9 @@ public class Game extends GUI {
     }
 
 
-
+    /**
+     * Updates each component inside the game.
+     */
     void update(){
         player.update();
         gameLevel.update();
@@ -186,19 +210,29 @@ public class Game extends GUI {
 
     }
 
+    /**
+     * Sets the manager's current state to GAME_OVER.
+     */
     private void gameOver() {
         setPlayerDirection(new Vector2D(0,0));
         manager.setState(GameStates.GAME_OVER);
 
     }
 
+    /**
+     * Change the player's direction.
+     * @param direction
+     */
     public void setPlayerDirection(Vector2D direction){
         player.setDirection(direction);
 
     }
 
 
-
+    /**
+     * Rendering method.
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -223,22 +257,33 @@ public class Game extends GUI {
 
     }
 
+    /**
+     * Just calls the player's reset method.
+     * @param x
+     * @param y
+     */
     public void resetPlayer(int x, int y) {
         player.reset(x, y);
     }
 
+    /**
+     * Resets entire level and the snake.
+     */
     public void retry(){
         gameLevel.retry();
         run();
 
     }
 
-
+    /**
+     * Sets the manager state to WIN.
+     */
     public void winGame() {
 
         manager.setState(GameStates.WIN);
         soundManager.update(GameStates.WIN);
     }
+
 
     public SoundManager getSoundManger() {
         return soundManager;

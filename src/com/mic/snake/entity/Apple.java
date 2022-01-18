@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Special entity sub-class for th apple.
+ */
 public class Apple extends Entity{
     Game game;
 
@@ -26,11 +29,17 @@ public class Apple extends Entity{
         }
     }
 
+    /**
+     * Spawn offscreen at the start of the game.
+     */
     private void initialize() {
         x = y = -24;
 
     }
 
+    /**
+     * Generate random location.
+     */
     public void newApple(){
         Random random = new Random();
 

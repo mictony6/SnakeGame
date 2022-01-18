@@ -6,10 +6,17 @@ import com.mic.snake.sound.SoundManager;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Sub-class of JFrame.
+ */
 public class Window extends JFrame{
     GameManager manager ;
-    SoundManager soundManager;
 
+    /**
+     * Instantiates game manager and adds all the screens to content pane.
+     * @param screenWidth
+     * @param screenHeight
+     */
     Window(int screenWidth, int screenHeight){
         super("Snake");
         CardLayout cardLayout = new CardLayout();
@@ -35,6 +42,7 @@ public class Window extends JFrame{
 
         manager.runProgram(cardLayout, this);
     }
+
 
     public Game getGame(){
         return manager.gameScreen;

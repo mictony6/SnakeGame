@@ -5,6 +5,9 @@ import com.mic.snake.components.Vector2D;
 
 import java.util.ArrayList;
 
+/**
+ * A chain of entity objects like a linked list.
+ */
 public class EntityChain {
     BoxCollider head;
     Entity tail;
@@ -25,6 +28,9 @@ public class EntityChain {
 
     }
 
+    /**
+     * Inserts new Entity at the end of the chain.
+     */
     void insert(){
         Entity newPart = new Entity();
         newPart.x = -32;
@@ -40,6 +46,10 @@ public class EntityChain {
         length++;
     }
 
+    /**
+     * @deprecated Unused.
+     * @return
+     */
     ArrayList<Entity> getArrayList(){
         Entity current = head;
         ArrayList<Entity> chain = new ArrayList<>();

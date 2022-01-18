@@ -5,6 +5,10 @@ import com.mic.snake.window.GameManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class for handling events triggered by JButtons in the game.
+ * @author Michael Anthony Bitoon.
+ */
 public class ButtonListener implements ActionListener {
     GameManager manager;
 

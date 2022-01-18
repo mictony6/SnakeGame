@@ -3,8 +3,13 @@ package com.mic.snake.components;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-
+/**
+ * Class for creating and deriving game-specific fonts.
+ * @author Michael Anthony Bitoon
+ */
 public class GameFont {
+
+
 
     private Font smallFont;
     private Font largeFont;
@@ -25,11 +30,19 @@ public class GameFont {
         smallFont = zeldaFont.deriveFont(Font.PLAIN, 20);
     }
 
+    /**
+     * Returns header font.
+     */
     public Font getLargeFont() {
+
         return largeFont;
     }
 
+    /**
+     * Returns sub-header font.
+     */
     public Font getSmallFont() {
+
         return smallFont;
     }
 

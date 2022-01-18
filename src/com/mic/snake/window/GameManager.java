@@ -8,7 +8,10 @@ import com.mic.snake.sound.SoundManager;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Helper class for the Game which allows switching of screens based on the current game state.
+ * @author Michael Anthony Bitoon
+ */
 public class GameManager {
     Game gameScreen;
     SoundManager soundManager;
@@ -17,6 +20,11 @@ public class GameManager {
     GameStates currentState = GameStates.MENU;
     ButtonListener listener;
 
+    /**
+     * Initializes all the screens.
+     * @param w screen width
+     * @param h screen height
+     */
     GameManager(int w, int h){
         this.soundManager = new SoundManager();
         this.w = w;
@@ -25,12 +33,16 @@ public class GameManager {
         gameScreen = GUIFactory.getGameScreen(this);
         gameOverScreen = GUIFactory.getGameOverScreen(this, listener);
         mainMenuScreen = GUIFactory.getMenuScreen(this, listener);
-        winScreen = GUIFactory.getWinScreen(this, listener);
+        winScreen = GUIFactory.getWinScreen(this);
 
 
     }
 
-
+    /**
+     * Creates an outside loop for the game screens. Different from the Game class's run method.
+     * @param cardLayout
+     * @param window
+     */
     public void runProgram(CardLayout cardLayout, Window window){
         System.out.println("Starting Game");
         gameScreen.setSoundManager(soundManager);
@@ -64,7 +76,10 @@ public class GameManager {
         window.dispose();
     }
 
-
+    /**
+     * Set the current game state.
+     * @param state
+     */
     public void setState(GameStates state) {
         currentState = state;
     }
@@ -76,8 +91,18 @@ public class GameManager {
 
 }
 
+/**
+ * Factory class for statically generating each GUI used in the game.
+ */
 class GUIFactory {
-
+    /**
+     * Creates a custom button for the game.
+     * @param title
+     * @param actionCommand
+     * @param font
+     * @param listener
+     * @return
+     */
     static JButton makeButton(String title, String actionCommand, Font font, ButtonListener listener) {
         JButton button = new JButton(title);
         button.addActionListener(listener);
@@ -165,7 +190,7 @@ class GUIFactory {
 
     }
 
-    static GUI getWinScreen(GameManager manager, ButtonListener listener) {
+    static GUI getWinScreen(GameManager manager) {
         GUI winPanel = new GUI(manager);
         GameFont fonts = new GameFont();
 

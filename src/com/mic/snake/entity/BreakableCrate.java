@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
+
 public class BreakableCrate extends Crate{
     public boolean isBroken = false;
     public BreakableCrate(int x, int y, ID id) {

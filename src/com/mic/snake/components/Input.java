@@ -4,8 +4,12 @@ import com.mic.snake.window.Window;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+/**
+ * Handles game keyboard inputs.
+ * @author Michael Anthony Bitoon
+ */
 public class Input extends KeyAdapter {
+
     Window window;
 
     public Input(Window window){

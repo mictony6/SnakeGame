@@ -8,14 +8,30 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Manages level resources from files and appends the correct images to each object.
+ * @author Michael Anthony Bitoon
+ */
 public class LevelLoader {
 
+    /**
+     * Loads a CSV file containing level information.
+     * @param i the level number
+     * @return obstacles group
+     * @throws IOException
+     */
     public ColliderGroup loadLevel(int i) throws IOException {
         String path = "/data/level/level_level"+i+".csv";
         return parseLevelFile(path);
 
     }
 
+    /**
+     * Separate method for reading the csv file.
+     * @param path path to resource
+     * @return
+     * @throws IOException file may not be found.
+     */
     ColliderGroup parseLevelFile(String path) throws IOException {
         ArrayList<ArrayList<Integer>> data = new ArrayList<>();
 

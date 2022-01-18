@@ -2,8 +2,10 @@ package com.mic.snake.sound;
 
 
 import com.mic.snake.mouse.GameStates;
-import com.mic.snake.window.GameManager;
 
+/**
+ * Class for managing Sound objects.
+ */
 public class SoundManager {
     public Sound main, gameOver, hit, collect, boost, newItem, newLevel, win;
     GameStates lastState;
@@ -26,7 +28,10 @@ public class SoundManager {
         lastState = GameStates.MENU;
     }
 
-
+    /**
+     * Plays a sound clip based on the current state of the game.
+     * @param currentState
+     */
     public void update(GameStates currentState) {
         switch (currentState){
             case MENU, PLAYING -> {

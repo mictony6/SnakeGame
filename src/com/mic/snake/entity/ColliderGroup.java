@@ -6,6 +6,10 @@ import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
 
+/**
+ * Class for handling a group of BoxColliders.
+ * @author Michael Anthony Bitoon
+ */
 public class ColliderGroup {
 
     private ArrayList <BoxCollider> group;
@@ -31,12 +35,20 @@ public class ColliderGroup {
         return group;
     }
 
+    /**
+     * Calls draw method on each member of the group.
+     * @param g2
+     * @param size
+     */
     public void draw(Graphics2D g2, int size){
         for (BoxCollider e: group){
             e.draw(g2, e.img, size);
         }
     }
 
+    /**
+     * Calls update method on each BoxCollider member.
+     */
     public void update(){
         for (BoxCollider e: group){
             e.update();
@@ -51,6 +63,9 @@ public class ColliderGroup {
                 '}';
     }
 
+    /**
+     * Clears group.
+     */
     public void clear(){
         group.clear();
         size = 0 ;

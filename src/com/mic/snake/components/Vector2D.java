@@ -1,8 +1,11 @@
 package com.mic.snake.components;
 
 import java.util.Objects;
-import java.util.Vector;
 
+/**
+ * Custom Vector class for dealing with game coordinates.
+ * @author Michael Anthony Bitoon
+ */
 public class Vector2D {
     public float x;
     public float y;
@@ -74,13 +77,6 @@ public class Vector2D {
         return new Vector2D(1, 0);
     }
 
-    public boolean inverseOf(Vector2D other){
-
-        if (this.equals(other.scale(-1))){
-            return true;
-        }
-        return false;
-    }
 
     public boolean equals(Object o) {
         if (this == o) return true;

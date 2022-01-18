@@ -9,6 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Contains all useful methods for dealing with the snake in the game.
+ * @author Michael Anthony Bitoon
+ */
 public class Snake {
     BufferedImage bodyPart, headDown, headRight, headLeft, headUp ;
     BufferedImage tailLeft, tailRight, tailUp, tailDown;
@@ -39,6 +43,10 @@ public class Snake {
 
     }
 
+    /**
+     * Sets the snake's direction.
+     * @param direction
+     */
     public void setDirection(Vector2D direction) {
         this.direction = direction;
     }
@@ -51,6 +59,9 @@ public class Snake {
         return snake.head;
     }
 
+    /**
+     * Works by traversing the snake's entity chain from the tail and updating it's position to the previous one's position.
+     */
     public void update(){
         Entity part = snake.tail.prev;
         while (part != snake.head && !direction.equals(new Vector2D(0,0))){
@@ -68,6 +79,9 @@ public class Snake {
 
     }
 
+    /**
+     * Separate method for the snake's head which responds to player inputs.
+     */
     void move(){
         if (snake.head.direction.equals(Vector2D.up())&& direction.equals(Vector2D.down())){
             direction = snake.head.direction;
@@ -86,6 +100,11 @@ public class Snake {
 
     }
 
+    /**
+     * Gets correct image for the correct direction and part.
+     * @param part
+     * @return
+     */
     BufferedImage getImage(Entity part){
         BufferedImage currentImage = null;
 
@@ -134,6 +153,10 @@ public class Snake {
 
     }
 
+    /**
+     * Draw the snake on the screen.
+     * @param g2
+     */
     public void draw(Graphics2D g2){
         Entity part = snake.head;
         int body_size = game.tileSize;
@@ -155,6 +178,9 @@ public class Snake {
 
     }
 
+    /**
+     * Add a new part to the snake.
+     */
     public void new_part(){
         snake.insert();
     }
@@ -163,15 +189,29 @@ public class Snake {
         return new Vector2D(snake.head.x, snake.head.y);
     }
 
+    /**
+     * Checks the if the head's position is colliding with any object.
+     * @param other
+     * @return
+     */
     public boolean collidesWith(BoxCollider other){
             return snake.head.collidesWith(other);
 
     }
 
+    /**
+     *
+     * @return the score minus the starting lenght.
+     */
     public int getScore (){
         return snake.length-2;
     }
 
+    /**
+     * Resets the snake to the given coordinates.
+     * @param x
+     * @param y
+     */
     public void reset(int x, int y){
         int lastLength = snake.length;
         snake = new EntityChain(x,y);
